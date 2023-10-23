@@ -27,11 +27,15 @@ app.get("/api/:date?", function (req, res) {
 
   if(req.params.date) {
     const is_timestamp = req.params.date.search('-') === -1;
-    date = new Date(is_timestamp ? +req.params.date : req.params.date);
+    date = is_timestamp ? new Date( +req.params.date) : Date.parse(req.params.date);
   }
 
-  if(!date) {
+
+
+  if(!date.getTime()) {
     res.json({error: "Invalid Date"});
+
+    return;
   }
 
   res.json({unix: date.getTime(), utc: date.toUTCString()});
