@@ -21,10 +21,14 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/:date", function (req, res) {
-  const is_timestamp = req.params.date.search('-') === -1;
+// ? optional parameter
+app.get("/api/:date?", function (req, res) {
+  let date = new Date();
 
-  const date = new Date(is_timestamp ? +req.params.date : req.params.date);
+  if(req.params.date) {
+    const is_timestamp = req.params.date.search('-') === -1;
+    date = new Date(is_timestamp ? +req.params.date : req.params.date);
+  }
 
   if(!date) {
     res.json({error: "Invalid Date"});
